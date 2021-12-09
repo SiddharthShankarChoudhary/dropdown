@@ -1,40 +1,57 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import 'antd/dist/antd.css';
+import './index.css';
+import { Select } from 'antd';
 
-class Drop extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {value: 'coconut'};
-  
-      this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-    }
-  
-    handleChange(event) {
-      this.setState({value: event.target.value});
-    }
-  
-    handleSubmit(event) {
-      alert('Your favorite flavor is: ' + this.state.value);
-      event.preventDefault();
-    }
-  
-    render() {
-      return (
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Pick your favorite flavor:
-            <select value={this.state.value} onChange={this.handleChange}>
-              <option value="grapefruit">Grapefruit</option>
-              <option value="lime">Lime</option>
-              <option value="coconut">Coconut</option>
-              <option value="mango">Mango</option>
-            </select>
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-      );
-    }
+const { Option } = Select;
+
+
+function onChange(value) {
+  console.log(`selected ${value}`);
+}
+
+function onSearch(val) {
+  console.log('search:', val);
+}
+
+
+var options = []; // initialise an empty array
+var temp = '';
+
+do {
+  temp = prompt("Enter a number. Press cancel or leave empty to finish.");
+  if (temp === "" || temp === null) {
+      break;
+  } else {
+      options.push(temp);  // the array will dynamically grow
   }
+} while (1);
 
-ReactDOM.render(<Drop/>, document.querySelector("#root"));
+
+
+var select = document.getElementById("selectNumber");
+
+
+ReactDOM.render(
+  <Select
+    showSearch
+    placeholder="Select an option"
+    optionFilterProp="children"
+    onChange={onChange}
+    onSearch={onSearch}
+    filterOption={(input, option) =>
+      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    }
+  >
+    for(let i = 0; i < options.length; i++) {
+    var opt = options[i];
+    var el = document.createElement("options");
+    el.textContent = opt;
+    el.value = opt;
+    select.appendChild(el);
+  }
+  </Select>,
+  document.getElementById('container'),
+);
+
